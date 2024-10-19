@@ -9,14 +9,48 @@
     p { margin-bottom: 20px; font-size: 12px; }
     a { color: blue; text-decoration: none; }
     a:hover { text-decoration: underline; }
+    table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+    th, td { padding: 10px; border: 1px solid #ccc; text-align: left; }
+    th { background-color: #f2f2f2; }
   </style>
 </head>
 <body>
   <h1>What did I eat?</h1>
   <p>Here are some of my recent food experiences:</p>
 
-  <p><strong>Chole Bhature at Anand Sweets</strong> [October 19, 2024]:
-  I tried chole bhature from Anand Sweets and rated it <strong>4.5/5</strong>. The chole wasn't too spicy, and also had paneer. It was served with salad and pickles, making for a satisfying meal!</p>
+  <table>
+    <thead>
+      <tr>
+        <th>Date</th>
+        <th>Rating</th>
+        <th>Food Items</th>
+        <th>Place</th>
+        <th>Price</th>
+        <th>Platform</th>
+        <th>Comments</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>October 19, 2024</td>
+        <td>4.5/5</td>
+        <td>Chole Bhature</td>
+        <td>Anand Sweets, Koramangala</td>
+        <td>260</td>
+        <td>Zomato</td>
+        <td>The chole wasn't too spicy, and it was served with paneer, salad, and pickles, making for a satisfying meal!</td>
+      </tr>
+      <tr>
+        <td>October 19, 2024</td>
+        <td>2.5/5</td>
+        <td>Chicken Saute Rice Bowl (Brocolli Sauce)</td>
+        <td>Onesta, Koramangala</td>
+        <td>143</td>
+        <td>Zomato</td>
+        <td>Unhealthy and fried</td>
+      </tr>
+    </tbody>
+  </table>
 
   <p><a href="index.html">Back to Home</a></p>
 </body>
