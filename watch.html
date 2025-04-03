@@ -2,35 +2,104 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <title>What Did I Watch?</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>What did I watch?</title>
   <style>
-    body { font-family: Arial, sans-serif; line-height: 1.6; margin: 40px; }
-    p { margin-bottom: 20px; font-size: 12px; }
-    li { margin-bottom: 2px; font-size: 12px; }
-    a { color: blue; text-decoration: none; }
-    a:hover { text-decoration: underline; }
+    /* Reset & Base */
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: #fff;
+      color: #000;
+      font-family: "Courier New", Courier, monospace;
+      font-size: 16px;
+      line-height: 1.5;
+      height: 100%;
+    }
+    /* Centering container */
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+    header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+    header h1 {
+      font-size: 4rem;
+      margin: 0;
+      line-height: 1;
+    }
+    header p {
+      font-size: 1rem;
+      margin-top: 0.5rem;
+      color: #555;
+    }
+    main {
+      text-align: left;
+    }
+    section {
+      margin-bottom: 2rem;
+    }
+    /* Optional: A heading for the list (you can remove this if not needed) */
+    section h2 {
+      font-size: 1.75rem;
+      margin-bottom: 0.5rem;
+      border-bottom: 1px solid #ccc;
+      padding-bottom: 0.5rem;
+    }
+    ul {
+      list-style: none;
+      padding-left: 0;
+    }
+    li {
+      margin-bottom: 0.5rem;
+      padding-left: 1rem;
+      position: relative;
+    }
+    li::before {
+      content: "•";
+      position: absolute;
+      left: 0;
+      color: #000;
+    }
+    footer {
+      text-align: center;
+      font-size: 0.8rem;
+      color: #777;
+      margin-top: 2rem;
+    }
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
   </style>
 </head>
 <body>
-  <h1>What did I watch?</h1>
-  <p>Here are some of the series and movies I've enjoyed in 2024:</p>
-  <p>Hindi:</p>
-  <ul>
-    <li><strong>Mirzapur Season 3:</strong> Watched in July – 7/10 </li>
-    <li><strong>Farzi:</strong> Re-Watched in September – 8/10 </li>
-    <li><strong>Stree 2:</strong> Watched in August –  6/10 </li>
-    <li><strong>Shaitan:</strong> Watched in March – 8/10</li>
-    <li><strong>Ctrl:</strong> Watched in October – 7/10</li>
-    <li><strong>Fir se haseen dilruba</strong> Watched in October - 6.5/10</li>
-    <li><strong>Black Mirror - Hang the DJ</strong> Watched in November - 9/10</li>
-    <li><strong>It's What's Inside (Netflix) </strong> Watched in November - 8.5/10</li>
-  </ul>
-  <p>English:</p>
-    <ul>
-    <li><strong>The Intern:</strong> Watched in October – 9/10</li>
-  </ul>
-
-  <p><a href="index.html">Back to Home</a></p>
+  <div class="container">
+    <header>
+      <h1>What Did I Watch?</h1>
+      <p>A basic minimal log of my viewing journey this year</p>
+    </header>
+    <main>
+      <section>
+        <!-- Optional: you can add a heading here, or remove it -->
+        <!-- <h2>Watched</h2> -->
+        <ul>
+          <li><strong>Aavesham</strong> – 5/10</li>
+          <li><strong>Your Name (Anime)</strong> – 7/10</li>
+          <li><strong>Badass Ravikumar</strong> – 1/10</li>
+          <li><strong>Prince</strong> – 3/10</li>
+        </ul>
+      </section>
+    </main>
+    <footer>
+      <p>&copy; 2025 Shashwat</p>
+    </footer>
+  </div>
 </body>
 </html>
