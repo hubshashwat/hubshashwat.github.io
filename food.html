@@ -2,84 +2,95 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <title>Shashwat Kumar</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>What did I eat?</title>
   <style>
-    body { font-family: Arial, sans-serif; line-height: 1.6; margin: 40px; }
-    p { margin-bottom: 20px; font-size: 12px; }
-    a { color: blue; text-decoration: none; }
-    a:hover { text-decoration: underline; }
-    table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-    th, td { font-size: 13px; padding: 10px; border: 1px solid #ccc; text-align: left; cursor: pointer; }
-    th { background-color: #f2f2f2; }
+    /* Reset and basic styling */
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: #fff;
+      color: #000;
+      font-family: "Courier New", Courier, monospace;
+      font-size: 16px;
+      line-height: 1.5;
+    }
+    /* Centering container */
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+    /* Header styling */
+    header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+    header h1 {
+      font-size: 2.5rem;
+      margin: 0;
+    }
+    /* Section styling */
+    section {
+      margin-bottom: 2rem;
+    }
+    h2 {
+      font-size: 1.5rem;
+      border-bottom: 1px solid #ccc;
+      padding-bottom: 0.5rem;
+    }
+    ul {
+      list-style: none;
+      padding-left: 0;
+    }
+    li {
+      margin-bottom: 0.5rem;
+    }
+    a {
+      color: #000;
+      text-decoration: none;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+    /* Footer styling */
+    footer {
+      text-align: center;
+      font-size: 0.8rem;
+      color: #777;
+      margin-top: 2rem;
+    }
   </style>
 </head>
 <body>
-  <h1>What did I eat?</h1>
-  <p>Here are some of my recent food experiences:</p>
-
-  <table id="foodTable">
-    <thead>
-      <tr>
-        <th onclick="sortTable(0, 'date')">Date</th>
-        <th onclick="sortTable(1, 'num')">Rating</th>
-        <th>Food Items</th>
-        <th>Place</th>
-        <th>Price</th>
-        <th>Platform</th>
-        <th>Comments</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr><td>October 19, 2024</td><td>4.5/5</td><td>Chole Bhature</td><td>Anand Sweets, Koramangala</td><td>260</td><td>Zomato</td><td>The chole wasn't too spicy, and it was served with paneer, salad, and pickles, making for a satisfying meal!</td></tr>
-      <tr><td>October 19, 2024</td><td>2.5/5</td><td>Chicken Saute Rice Bowl (Brocolli Sauce)</td><td>Onesta, Koramangala</td><td>143</td><td>Zomato</td><td>Unhealthy and fried</td></tr>
-      <tr><td>October 20, 2024</td><td>4/5</td><td>2 x Paneer Paratha</td><td>Litti Heist, Koramangala</td><td>130</td><td>Zomato</td><td>-</td></tr>
-      <tr><td>October 20, 2024</td><td>3/5</td><td>Grilled Paneer Power Sandwich</td><td>WeFit, Ejipura</td><td>105</td><td>Swiggy</td><td>Super small. I don't think it's 31g of protein either</td></tr>
-      <tr><td>October 21, 2024</td><td>2.8/5</td><td>Sautee Veggie Rice Bowl with Cheese Sauce</td><td>Onesta, Koramangala</td><td>143</td><td>Zomato</td><td>-</td></tr>
-      <tr><td>October 25, 2024</td><td>3.5/5</td><td>Bun Tikki Burger, French Fries, Muffin, Coke (Combo)</td><td>Wendy's, BTM</td><td>180</td><td>Zomato</td><td>-</td></tr>
-      <tr><td>October 26, 2024</td><td>3/5</td><td>Plain Dosa</td><td>Everyday</td><td>100</td><td>Zomato</td><td>-</td></tr>
-      <tr><td>October 26, 2024</td><td>1.5/5</td><td>Dal Khichdi</td><td>Everyday</td><td>100</td><td>Zomato</td><td>Spicy and useless</td></tr>
-      <tr><td>October 26, 2024</td><td>2.5/5</td><td>Egg Biryani/MRP Onion Samosa</td><td>Bob's Bar, Koramanagala</td><td>172</td><td>Zomato</td><td>Fairly average</td></tr>
-      <tr><td>October 27, 2024</td><td>3.5/5</td><td>Chicken Do Pyaza/10xPhulka</td><td>Maa Di Hatti, Koramanagala</td><td>215</td><td>Zomato</td><td>-</td></tr>
-      <tr><td>October 27, 2024</td><td>4.5/5</td><td>Plain Khichdi/Gulab Jamun/Raita</td><td>Roti-Wala.com, BTM</td><td>170</td><td>Zomato</td><td>Plain, simple and tasty</td></tr>
-      <tr><td>October 29, 2024</td><td>4.5/5</td><td>Dal Khichdi</td><td>ITC Aashirwaad Soul Creations</td><td>153</td><td>Zomato</td><td>Hygienic</td></tr>
-      <tr><td>November 3, 2024</td><td>1.5/5</td><td>Roti and Chole</td><td>Zepto Cafe</td><td>200</td><td>Zepto</td><td>Gave me a good amount of acidity :) </td></tr>
-      <tr><td>November 4, 2024</td><td>3.5/5</td><td>Jain Khichdi</td><td>Eat Fit</td><td>126</td><td>Zomato</td><td>Hygienic, but a lil spicy</td></tr>
-    </tbody>
-  </table>
-
-  <p><a href="index.html">Back to Home</a></p>
-
-  <script>
-    function parseDate(dateStr) {
-      const [month, day, year] = dateStr.split(" ");
-      const months = { January: 0, February: 1, March: 2, April: 3, May: 4, June: 5, July: 6, August: 7, September: 8, October: 9, November: 10, December: 11 };
-      return new Date(year, months[month], parseInt(day));
-    }
-
-    function sortTable(columnIndex, type) {
-      const table = document.getElementById("foodTable");
-      const rows = Array.from(table.rows).slice(1);
-      const isAscending = table.getAttribute("data-sort-order") !== "asc";
-
-      rows.sort((rowA, rowB) => {
-        let valA = rowA.cells[columnIndex].innerText;
-        let valB = rowB.cells[columnIndex].innerText;
-
-        if (type === "date") {
-          valA = parseDate(valA);
-          valB = parseDate(valB);
-        } else if (type === "num") {
-          valA = parseFloat(valA);
-          valB = parseFloat(valB);
-        }
-
-        return isAscending ? valA - valB : valB - valA;
-      });
-
-      rows.forEach(row => table.appendChild(row));
-      table.setAttribute("data-sort-order", isAscending ? "asc" : "desc");
-    }
-  </script>
+  <div class="container">
+    <header>
+      <h1>Shashwat Kumar</h1>
+    </header>
+    <main>
+      <section id="about">
+        <h2>About Me</h2>
+        <p>My interests align in the direction of development blended with data. If you have an offer, opportunity, or introduction that might make my life more interesting, e-mail me at <a href="mailto:forwardtoshashwat@gmail.com">forwardtoshashwat@gmail.com</a> with the subject "Interesting: Your Purpose".</p>
+      </section>
+      <!-- <section id="interests">
+        <h2>Explore My Interests / Keeping Track</h2>
+        <ul>
+          <li><a href="#">A curated list of stuff I'd recommend (Updated: June 1)</a></li>
+        </ul>
+      </section> -->
+      <section id="find-me">
+        <h2>Find Me Online</h2>
+        <ul>
+         <li><a href="https://linkedin.com/in/forwardtoshashwat">LinkedIn</a></li>
+  <li><a href="https://stackoverflow.com/users/15484393/shashwat">Stack Overflow</a></li>
+  <li><a href="https://medium.com/@shashwatwrites">Medium</a></li>
+  <li><a href="https://github.com/hubshashwat">Github</a></li>
+        </ul>
+      </section>
+    </main>
+    <footer>
+      <p>&copy; 2025 Shashwat</p>
+    </footer>
+  </div>
 </body>
 </html>
