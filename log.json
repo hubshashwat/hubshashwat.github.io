@@ -6,10 +6,10 @@
       "notes": "-"
     },
     {
-      "date": "2025-04-02",
-      "blind": 0,
-      "design": "-",
-      "notes": "-"
-    }
+  "date": "2025-04-09",
+  "blind": 1,
+  "design": "Latency vs Throughout ",
+  "notes": "Finding the kth smallest in a BST"
+}
 ]
   
