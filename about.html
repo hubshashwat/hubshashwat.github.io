@@ -1,95 +1,331 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8">
-  <title>Shashwat Kumar</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <style>
-    /* Reset and basic styling */
-    html, body {
-      margin: 0;
-      padding: 0;
-      background: #fff;
-      color: #000;
-      font-family: "Courier New", Courier, monospace;
-      font-size: 16px;
-      line-height: 1.5;
-    }
-    /* Centering container */
-    .container {
-      max-width: 800px;
-      margin: 0 auto;
-      padding: 2rem;
-    }
-    /* Header styling */
-    header {
-      text-align: center;
-      margin-bottom: 2rem;
-    }
-    header h1 {
-      font-size: 2.5rem;
-      margin: 0;
-    }
-    /* Section styling */
-    section {
-      margin-bottom: 2rem;
-    }
-    h2 {
-      font-size: 1.5rem;
-      border-bottom: 1px solid #ccc;
-      padding-bottom: 0.5rem;
-    }
-    ul {
-      list-style: none;
-      padding-left: 0;
-    }
-    li {
-      margin-bottom: 0.5rem;
-    }
-    a {
-      color: #000;
-      text-decoration: none;
-    }
-    a:hover {
-      text-decoration: underline;
-    }
-    /* Footer styling */
-    footer {
-      text-align: center;
-      font-size: 0.8rem;
-      color: #777;
-      margin-top: 2rem;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shashwat Kumar</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Raleway:wght@200;300;400&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #000000;
+            --text-primary: #ffffff;
+            --text-secondary: rgba(255, 255, 255, 0.7);
+            --accent: #d4af37;
+            /* Gold accent for feel */
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            font-family: 'Raleway', sans-serif;
+            overflow: hidden;
+            /* Hide scroll for full immersion */
+            height: 100vh;
+            width: 100vw;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Canvas Background */
+        #vision-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            /* Behind content */
+        }
+
+        /* Content Overlay */
+        .content-wrapper {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            padding: 2rem;
+            max-width: 800px;
+            pointer-events: none;
+            /* Let clicks pass through to canvas if needed, but we have links */
+        }
+
+        .content-card {
+            background: rgba(0, 0, 0, 0.2);
+            /* Very subtle backing */
+            backdrop-filter: blur(5px);
+            padding: 3rem;
+            border-radius: 50%;
+            /* Circular layout to match spiral */
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 0 50px rgba(0, 0, 0, 0.8);
+            pointer-events: auto;
+            transform: scale(0.9);
+            opacity: 0;
+            animation: emerge 1.5s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+            animation-delay: 0.5s;
+        }
+
+        /* Typography */
+        h1 {
+            font-family: 'Cinzel Decorative', serif;
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 400;
+            letter-spacing: 0.1em;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(to bottom, #fff, #aaa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+        }
+
+        .subtitle {
+            font-family: 'Raleway', sans-serif;
+            font-size: 0.9rem;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 2rem;
+            display: block;
+        }
+
+        p {
+            font-size: 1.1rem;
+            font-weight: 300;
+            line-height: 1.6;
+            margin-bottom: 2rem;
+            color: var(--text-secondary);
+        }
+
+        a {
+            color: var(--text-primary);
+            text-decoration: none;
+            border-bottom: 1px solid var(--accent);
+            transition: all 0.3s ease;
+        }
+
+        a:hover {
+            color: var(--accent);
+            text-shadow: 0 0 10px var(--accent);
+        }
+
+        /* Social Links as Orbiting Elements */
+        .social-links {
+            list-style: none;
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .social-links li a {
+            font-family: 'Cinzel Decorative', serif;
+            font-size: 0.9rem;
+            border: none;
+            position: relative;
+            letter-spacing: 0.1em;
+        }
+
+        .social-links li a::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 1px;
+            bottom: -5px;
+            left: 0;
+            background: var(--accent);
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .social-links li a:hover::before {
+            transform: scaleX(1);
+        }
+
+        footer {
+            margin-top: 3rem;
+            font-size: 0.7rem;
+            opacity: 0.6;
+            letter-spacing: 0.2em;
+        }
+
+        @keyframes emerge {
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        /* Mobile Adjustments */
+        @media (max-width: 600px) {
+            .content-card {
+                padding: 1.5rem;
+                border-radius: 20px;
+                /* specific mobile radius */
+            }
+        }
+    </style>
 </head>
+
 <body>
-  <div class="container">
-    <header>
-      <h1>Shashwat Kumar</h1>
-    </header>
-    <main>
-      <section id="about">
-        <h2>About Me</h2>
-        <p>My interests align in the direction of development blended with data. If you have an offer, opportunity, or introduction that might make my life more interesting, e-mail me at <a href="mailto:forwardtoshashwat@gmail.com">forwardtoshashwat@gmail.com</a> with the subject "Interesting: Your Purpose".</p>
-      </section>
-      <!-- <section id="interests">
-        <h2>Explore My Interests / Keeping Track</h2>
-        <ul>
-          <li><a href="#">A curated list of stuff I'd recommend (Updated: June 1)</a></li>
-        </ul>
-      </section> -->
-      <section id="find-me">
-        <h2>Find Me Online</h2>
-        <ul>
-         <li><a href="https://linkedin.com/in/forwardtoshashwat">LinkedIn</a></li>
-  <li><a href="https://stackoverflow.com/users/15484393/shashwat">Stack Overflow</a></li>
-  <li><a href="https://github.com/hubshashwat">Github</a></li>
-        </ul>
-      </section>
-    </main>
-    <footer>
-      <p>&copy; 2025 Shashwat</p>
-    </footer>
-  </div>
+    <canvas id="vision-canvas"></canvas>
+
+    <div class="content-wrapper">
+        <div class="content-card">
+            <header>
+                <span class="subtitle">Portfolio // <span class="current-year">2025</span></span>
+                <h1>Shashwat Kumar</h1>
+            </header>
+
+            <main>
+                <div class="about-section">
+                    <p>
+                        My interests align in the direction of development blended with data.
+                        Exploring the event horizon of code and design.
+                    </p>
+                    <p>
+                        If you have an offer, opportunity, or introduction that might make my life more interesting,
+                        e-mail me at <a href="mailto:forwardtoshashwat@gmail.com">forwardtoshashwat@gmail.com</a>
+                        with the subject "Interesting: Your Purpose".
+                    </p>
+                </div>
+
+                <div class="connect-section">
+                    <ul class="social-links">
+                        <li><a href="https://linkedin.com/in/forwardtoshashwat" target="_blank">LinkedIn</a></li>
+                        <li><a href="https://stackoverflow.com/users/15484393/shashwat"
+                                target="_blank">StackOverflow</a></li>
+                        <li><a href="https://github.com/hubshashwat" target="_blank">Github</a></li>
+                    </ul>
+                </div>
+            </main>
+
+            <footer>
+                &copy; <span class="current-year">2025</span> //  Shashwat
+            </footer>
+        </div>
+    </div>
+
+    <script>
+        // Update Year
+        const currentYear = new Date().getFullYear();
+        document.querySelectorAll('.current-year').forEach(el => {
+            el.textContent = currentYear;
+        });
+        document.title = `Shashwat Kumar |  ${currentYear}`;
+
+        //  Spiral Canvas
+        const canvas = document.getElementById('vision-canvas');
+        const ctx = canvas.getContext('2d');
+
+        let width, height;
+        let particles = [];
+
+        function resize() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+            initParticles();
+        }
+
+        class Particle {
+            constructor() {
+                this.reset();
+            }
+
+            reset() {
+                this.angle = Math.random() * Math.PI * 2;
+                this.radius = Math.random() * 200 + 100; // Start closer
+                this.size = Math.random() * 2;
+                this.speed = (Math.random() * 0.005) + 0.002;
+                this.color = Math.random() > 0.5 ? '#ffffff' : '#d4af37'; // White or Gold
+                this.opacity = Math.random() * 0.5;
+                // Spiral expansion parameters
+                this.expansionRate = (Math.random() * 0.5) + 0.1;
+                this.maxRadius = Math.max(width, height) * 0.8;
+            }
+
+            update() {
+                this.angle += this.speed;
+                this.radius += this.expansionRate;
+
+                // Vortex effect: speed up as they get further out? Or slow down?
+                // Visual reference "Black Hole": usually fast center, slow edge.
+                // Let's invert: Start FAR and suck IN.
+            }
+
+            // Let's Try "Black Hole" Suction Mode
+            updateInward() {
+                this.angle += this.speed * (1000 / this.radius); // Faster near center
+                this.radius -= this.expansionRate;
+
+                if (this.radius < 10) {
+                    this.radius = Math.max(width, height) * 0.7; // Respawn at edge
+                    this.opacity = 0;
+                }
+
+                if (this.radius < Math.max(width, height) * 0.7 - 50) {
+                    this.opacity = Math.min(this.opacity + 0.01, 0.8);
+                }
+            }
+
+            draw() {
+                const x = width / 2 + Math.cos(this.angle) * this.radius;
+                const y = height / 2 + Math.sin(this.angle) * this.radius;
+
+                ctx.beginPath();
+                ctx.arc(x, y, this.size, 0, Math.PI * 2);
+                ctx.fillStyle = this.color;
+                ctx.globalAlpha = this.opacity; // Fade effect
+                ctx.fill();
+                ctx.globalAlpha = 1;
+            }
+        }
+
+        function initParticles() {
+            particles = [];
+            const particleCount = 800; // Dense field
+            for (let i = 0; i < particleCount; i++) {
+                let p = new Particle();
+                p.radius = Math.random() * (Math.max(width, height) * 0.7); // Random start positions
+                particles.push(p);
+            }
+        }
+
+        function animate() {
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.1)'; // Trails effect
+            ctx.fillRect(0, 0, width, height);
+
+            particles.forEach(p => {
+                p.updateInward();
+                p.draw();
+            });
+
+            // Draw Central Void/Event Horizon Glowing Ring
+            ctx.beginPath();
+            ctx.arc(width / 2, height / 2, 20, 0, Math.PI * 2);
+            ctx.fillStyle = 'black';
+            ctx.shadowBlur = 20;
+            ctx.shadowColor = '#d4af37';
+            ctx.fill();
+            ctx.shadowBlur = 0; // Reset
+
+            requestAnimationFrame(animate);
+        }
+
+        window.addEventListener('resize', resize);
+        resize();
+        animate();
+    </script>
 </body>
+
 </html>
