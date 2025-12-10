@@ -1,88 +1,285 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
-  <title>Shashwat's Space</title>
+  <title>Shashwat | Ethereal</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  
   <meta name="google-site-verification" content="zs3LfhgjINIfn05_b07m2Nd4BQq9ifqTbIf_J292qBU" />
-
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;600;700&display=swap" rel="stylesheet">
   <style>
-    /* Reset and basic styling */
-    html, body {
+    :root {
+      --text-color: #ffffff;
+    }
+
+    * {
       margin: 0;
       padding: 0;
-      background: #fff;
-      color: #000;
-      font-family: "Courier New", Courier, monospace;
-      font-size: 16px;
-      line-height: 1.5;
-      height: 100%;
+      box-sizing: border-box;
     }
-    /* Centering container */
-    .container {
-      max-width: 800px;
-      margin: 0 auto;
-      padding: 2rem;
-      min-height: 100vh;
+
+    body {
+      background-color: #000;
+      color: var(--text-color);
+      font-family: 'Manrope', sans-serif;
+      overflow: hidden;
+      height: 100vh;
+      width: 100vw;
+      cursor: none;
+    }
+
+    /* Video Background */
+    #bg-video {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      object-fit: cover;
+    }
+
+    /* Overlay specific for video brightness control */
+    .video-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.4);
+      z-index: 1;
+      /* Above video */
+      pointer-events: none;
+    }
+
+    /* UI Overlay */
+    .overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 10;
+      pointer-events: none;
       display: flex;
       flex-direction: column;
-      justify-content: center;
-      align-items: center;
+      justify-content: space-between;
+      padding: 3rem;
     }
-    /* Header styling similar to tilde.club */
+
     header {
-      text-align: center;
-      margin-bottom: 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      opacity: 0.9;
     }
-    header h1 {
-      font-size: 4rem;
-      margin: 0;
-      line-height: 1;
+
+    .logo {
+      font-size: 1.2rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      pointer-events: auto;
+      text-transform: uppercase;
     }
-    header p {
-      font-size: 1rem;
-      margin-top: 0.5rem;
-      color: #555;
+
+    nav {
+      display: flex;
+      gap: 2.5rem;
+      pointer-events: auto;
     }
-    /* Content styling */
-    main {
-      width: 100%;
-      text-align: center;
-    }
-    main a {
-      color: inherit;
+
+    nav a {
+      color: var(--text-color);
       text-decoration: none;
-      margin: 0 0.5rem;
+      font-size: 0.9rem;
+      font-weight: 400;
+      position: relative;
+      opacity: 0.8;
+      transition: opacity 0.3s;
+    }
+
+    nav a:hover {
+      opacity: 1;
+    }
+
+    .main-content {
+      position: absolute;
+      bottom: 3rem;
+      left: 3rem;
+      pointer-events: none;
+    }
+
+    .text-grid {
+      display: grid;
+      grid-template-columns: repeat(2, auto);
+      gap: 0.5rem 2rem;
+      pointer-events: auto;
+    }
+
+    .link-item {
+      color: var(--text-color);
+      text-decoration: none;
       font-size: 1.1rem;
+      opacity: 0.7;
+      transition: all 0.3s;
+      font-weight: 300;
     }
-    main a:hover {
-      text-decoration: underline;
+
+    .link-item:hover {
+      opacity: 1;
+      transform: translateX(5px);
     }
-    /* Footer styling */
-    footer {
-      margin-top: 2rem;
+
+    .year-display {
       font-size: 0.8rem;
-      color: #777;
+      opacity: 0.5;
+      writing-mode: vertical-rl;
+      transform: rotate(180deg);
+      position: fixed;
+      right: 3rem;
+      bottom: 3rem;
+      letter-spacing: 0.1em;
+    }
+
+    /* Custom Cursor */
+    #cursor-dot,
+    #cursor-ring {
+      position: fixed;
+      top: 0;
+      left: 0;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+      z-index: 100;
+      mix-blend-mode: exclusion;
+    }
+
+    #cursor-dot {
+      width: 4px;
+      height: 4px;
+      background: white;
+      border-radius: 50%;
+    }
+
+    #cursor-ring {
+      width: 40px;
+      height: 40px;
+      border: 1px solid rgba(255, 255, 255, 0.5);
+      border-radius: 50%;
+      transition: width 0.2s, height 0.2s;
+    }
+
+    @media (max-width: 768px) {
+      .overlay {
+        padding: 1.5rem;
+        /* Center content on mobile */
+        align-items: center;
+        text-align: center;
+      }
+
+      header {
+        flex-direction: column;
+        gap: 1.5rem;
+      }
+
+      nav {
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
+      }
+
+      .year-display {
+        right: 1.5rem;
+        bottom: 1.5rem;
+        /* Optional: Hide est year on very small screens if it overlaps? Keep for now. */
+      }
+
+      #cursor-dot,
+      #cursor-ring {
+        display: none;
+      }
+
+      body {
+        cursor: auto;
+      }
     }
   </style>
 </head>
+
 <body>
-  <div class="container">
+
+  <!-- Video Background -->
+  <!-- User needs to add background.mp4 to the directory -->
+  <video autoplay loop muted playsinline id="bg-video">
+    <source src="background.mp4" type="video/mp4">
+    Your browser does not support the video tag.
+  </video>
+
+  <div class="video-overlay"></div>
+
+  <!-- Custom Cursor -->
+  <div id="cursor-dot"></div>
+  <div id="cursor-ring"></div>
+
+  <div class="overlay">
     <header>
-      <h1>𓆗</h1>
-      <p>Welcome to my space</p>
+      <div class="logo">Shashwat</div>
+      <nav>
+        <a href="about.html">About</a>
+        <a href="https://hubshashwat.github.io/focusmatestats/">Focusmate Analytics</a>
+        <a href="https://hubshashwat.github.io/best-findings/">Best Findings</a>
+        <a href="https://hubshashwat.github.io/affiliate/">Amazon Affiliate</a>
+        <a href="https://hubshashwat.github.io/devtools/">Tools</a>
+      </nav>
     </header>
-    <main>
-      <a href="https://hubshashwat.github.io/devtools/">Tools</a>
-      <a href="https://hubshashwat.github.io/focusmatestats/">FocusMate Analytics</a>
-      <a href="about.html">About</a>
-      <a href="https://hubshashwat.github.io/best-findings/">Recommendations</a>
-      <a href="https://hubshashwat.github.io/affiliate/">Amazon Affiliate</a>
-    </main>
-    <footer>
-      <p>&copy; 2025 Shashwat</p>
-    </footer>
+
+    <div class="year-display">
+      EST. <span class="current-year">2025</span>
+    </div>
   </div>
+
+  <script>
+    // Dynamic Year
+    document.querySelectorAll('.current-year').forEach(el => {
+      el.textContent = new Date().getFullYear();
+    });
+
+    // Cursor Logic
+    const cursorRing = document.getElementById('cursor-ring');
+    const cursorDot = document.getElementById('cursor-dot');
+    let mouseX = window.innerWidth / 2;
+    let mouseY = window.innerHeight / 2;
+    let ringX = mouseX;
+    let ringY = mouseY;
+
+    window.addEventListener('mousemove', (e) => {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+      cursorDot.style.left = mouseX + 'px';
+      cursorDot.style.top = mouseY + 'px';
+    });
+
+    // Custom Cursor Loop
+    function animateCursor() {
+      ringX += (mouseX - ringX) * 0.15;
+      ringY += (mouseY - ringY) * 0.15;
+      cursorRing.style.left = ringX + 'px';
+      cursorRing.style.top = ringY + 'px';
+      requestAnimationFrame(animateCursor);
+    }
+    animateCursor();
+
+    // Touch support
+    function handleTouch(e) {
+      if (e.touches.length > 0) {
+        mouseX = e.touches[0].clientX;
+        mouseY = e.touches[0].clientY;
+      }
+    }
+    window.addEventListener('touchstart', handleTouch, { passive: true });
+    window.addEventListener('touchmove', handleTouch, { passive: true });
+  </script>
 </body>
+
 </html>
