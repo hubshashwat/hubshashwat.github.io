@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://hubshashwat.github.io/sitemap.xml
