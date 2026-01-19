@@ -1,0 +1,14 @@
+[
+    {
+        "title": "12 Angry Men",
+        "year": 1957,
+        "rating": 9.0,
+        "genre": ["Drama"]
+    },
+    {
+        "title": "M3GAN",
+        "year": 2022,
+        "rating": 6.4,
+        "genre": ["Sci-Fi", "Horror"]
+    }
+]
