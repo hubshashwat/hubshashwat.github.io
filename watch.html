@@ -1,133 +1,599 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8">
-  <title>What Did I Watch?</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <style>
-    html, body {
-      margin: 0;
-      padding: 0;
-      background: #fff;
-      color: #000;
-      font-family: "Courier New", Courier, monospace;
-      font-size: 16px;
-      line-height: 1.5;
-      height: 100%;
-    }
-    .container {
-      max-width: 800px;
-      margin: 0 auto;
-      padding: 2rem;
-    }
-    header {
-      text-align: center;
-      margin-bottom: 2rem;
-    }
-    header h1 {
-      font-size: 4rem;
-      margin: 0;
-      line-height: 1;
-    }
-    header p {
-      font-size: 1rem;
-      margin-top: 0.5rem;
-      color: #555;
-    }
-    section {
-      margin-bottom: 2rem;
-    }
-    section h2 {
-      font-size: 1.75rem;
-      margin-bottom: 0.5rem;
-      border-bottom: 1px solid #ccc;
-      padding-bottom: 0.5rem;
-    }
-    ul {
-      list-style: none;
-      padding-left: 0;
-    }
-    li {
-      margin-bottom: 0.5rem;
-      padding-left: 1rem;
-      position: relative;
-    }
-    li::before {
-      content: "•";
-      position: absolute;
-      left: 0;
-      color: #000;
-    }
-    footer {
-      text-align: center;
-      font-size: 0.8rem;
-      color: #777;
-      margin-top: 2rem;
-    }
-    a {
-      color: inherit;
-      text-decoration: none;
-    }
-    a:hover {
-      text-decoration: underline;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movie Tracker</title>
+    <!-- Elegant Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@200;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #050505;
+            --card-bg: #111;
+            --accent: #e50914;
+            /* Netflix-ish red */
+            --text-main: #ffffff;
+            --text-muted: #888;
+            --success: #00ff88;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: 'Outfit', sans-serif;
+            margin: 0;
+            padding: 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        h1,
+        h2 {
+            font-weight: 600;
+            letter-spacing: -0.5px;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        h2 {
+            border-bottom: 1px solid #333;
+            padding-bottom: 10px;
+            margin-top: 40px;
+        }
+
+        /* Section: 2026 Watchlist */
+        .watchlist-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 50px;
+        }
+
+        .personal-card {
+            background: linear-gradient(145deg, #1a1a1a, #111);
+            border: 1px solid #333;
+            border-radius: 12px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            transition: transform 0.2s;
+        }
+
+        .personal-card:hover {
+            border-color: var(--text-muted);
+            transform: translateY(-2px);
+        }
+
+        .personal-card h3 {
+            margin: 10px 0 5px 0;
+            font-size: 1.1rem;
+        }
+
+        .personal-card span {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        /* Section: Top 250 List */
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .stats {
+            color: var(--text-muted);
+        }
+
+        .search-bar {
+            background: #111;
+            border: 1px solid #333;
+            padding: 10px 15px;
+            color: white;
+            border-radius: 20px;
+            width: 300px;
+            font-family: inherit;
+        }
+
+        .movie-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .movie-item {
+            display: flex;
+            align-items: center;
+            background: var(--card-bg);
+            padding: 10px;
+            border-radius: 8px;
+            transition: background 0.2s;
+            border: 1px solid transparent;
+        }
+
+        .movie-item:hover {
+            background: #1a1a1a;
+            border-color: #333;
+        }
+
+        .movie-item.watched {
+            opacity: 0.5;
+            background: #0a0a0a;
+        }
+
+        .poster,
+        .poster-placeholder {
+            width: 40px;
+            height: 60px;
+            border-radius: 4px;
+            margin-right: 15px;
+            flex-shrink: 0;
+            border: 1px solid #333;
+        }
+
+        .poster {
+            object-fit: cover;
+            background: #222;
+        }
+
+        .poster-placeholder {
+            background: #2a2a2a;
+            color: #ddd;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        .info {
+            flex-grow: 1;
+        }
+
+        .title {
+            font-weight: 600;
+            font-size: 1.1rem;
+            display: block;
+        }
+
+        .meta {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            margin-top: 4px;
+        }
+
+        .rating {
+            color: #f5c518;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+
+        /* Checkbox */
+        .check-container {
+            margin-left: 20px;
+            cursor: pointer;
+            position: relative;
+            width: 30px;
+            height: 30px;
+        }
+
+        .check-box {
+            width: 24px;
+            height: 24px;
+            border: 2px solid #555;
+            border-radius: 50%;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .movie-item.watched .check-box {
+            background: var(--success);
+            border-color: var(--success);
+            color: black;
+        }
+
+        .check-icon {
+            opacity: 0;
+            font-weight: bold;
+        }
+
+        .movie-item.watched .check-icon {
+            opacity: 1;
+        }
+
+        /* Tabs */
+        .tab-nav {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 30px;
+            border-bottom: 1px solid #333;
+            padding-bottom: 0;
+        }
+
+        .tab-btn {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-family: inherit;
+            font-size: 1.1rem;
+            padding: 10px 0;
+            cursor: pointer;
+            position: relative;
+            transition: color 0.2s;
+        }
+
+        .tab-btn.active {
+            color: white;
+            font-weight: 600;
+        }
+
+        .tab-btn.active::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: var(--accent);
+        }
+
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(5px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
 </head>
+
 <body>
-  <div class="container">
+
     <header>
-      <h1>What Did I Watch?</h1>
-      <p>A basic minimal log of my viewing journey this year</p>
+        <h1>My Movie Log</h1>
+        <p style="color: #888;">Tracking my cinematic journey.</p>
     </header>
-    <main>
-      <section>
-        <h2>Bollywood / Hindi</h2>
-        <ul>
-          <li><strong>Badass Ravikumar</strong> – 1/10</li>
-          <li><strong>Prince</strong> – 3/10</li>
-          <li><strong>Deva</strong> – 4/10</li>
-<li><strong>Hit</strong> – 6/10</li>
-          <li><strong>Chhava</strong> – 6/10</li>
-          <li><strong>Mukaddar ka Sikandar</strong> – 6.5/10</li>
-          <li><strong>Khakee-Bengal Chapter (TV Series)</strong> – 7.5/10</li>
-          <li><strong>The Jewel Thief</strong> – 2.5/10</li>
-          <li><strong>Dasvi</strong> – 6.5/10</li>
-          <li><strong>Savi</strong> – 5.5/10</li>
-          <li><strong>Dhoom Dhaam</strong> – 5/10</li>
-          <li><strong>83</strong> – 7/10</li>
-          <li><strong>Chor Nikal Ke Bhaga</strong> – 4/10</li>
-          <li><strong>Amar Singh Chamkila</strong> – 8/10</li>
-<li><strong>Raid 2</strong> – 7/10</li>
-          <li><strong>Jalebi</strong> – 6/10</li>
-        </ul>
-      </section>
 
-      <section>
-        <h2>South Indian</h2>
-        <ul>
-          <li><strong>Hridayam</strong> – 7/10</li>
-          <li><strong>Dragon</strong> – 7/10</li>
-          <li><strong>Hit 3</strong> – 6/10</li>
-<li><strong></strong> – 5/10</li>
-          <li><strong>Sir</strong> – 5/10</li>
-          <li><strong>Pushpa 2</strong> – 4/10</li>
-          <li><strong>Kurup</strong> – 5/10</li>
-        </ul>
-      </section>
+    <div class="tab-nav">
+        <button class="tab-btn active" onclick="switchTab('imdb')">IMDb Top 250</button>
+        <button class="tab-btn" onclick="switchTab('personal')">2026 Watchlist</button>
+    </div>
 
-      <section>
-        <h2>Hollywood / Other</h2>
-        <ul>
-          <li><strong>Your Name (Anime)</strong> – 7/10</li>
-          <li><strong>Adolescence (TV Series)</strong> – 8/10</li>
-          <li><strong>Cage Season 1 (TV Series)</strong> – 6/10</li>
-          <li><strong>Ninja Assassin</strong> – 5.5/10</li>
-        </ul>
-      </section>
-    </main>
-    <footer>
-      <p>&copy; 2025 Shashwat</p>
-    </footer>
-  </div>
+    <!-- Tab: IMDb Top 250 -->
+    <div id="tab-imdb" class="tab-content active">
+        <section>
+            <div class="controls">
+                <h2>IMDb Top 250</h2>
+                <div class="stats" id="progress-stats">0/250 Watched</div>
+            </div>
+            <input type="text" class="search-bar" placeholder="Search movies..." oninput="filterMovies(this.value)">
+
+            <div class="movie-list" id="imdb-list">
+                <div style="padding: 20px; text-align: center; color: #666;">Loading movies from GitHub...</div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Tab: Personal List -->
+    <div id="tab-personal" class="tab-content">
+        <section>
+            <div class="controls">
+                <h2>Watching in 2026</h2>
+                <div id="personal-controls">
+                    <!-- 'Add New' button will be injected here by JS if in Admin mode -->
+                </div>
+            </div>
+
+            <div class="movie-list" id="personal-list-container">
+                <!-- Dynamic Content -->
+            </div>
+        </section>
+    </div>
+
+    <div id="admin-panel"
+        style="display:none; position: fixed; bottom: 20px; right: 20px; background: #222; padding: 15px; border: 1px solid #444; border-radius: 8px; z-index: 100;">
+        <h4 style="margin: 0 0 10px 0; color: #fff;">Admin Mode</h4>
+        <button onclick="exportData()"
+            style="background: #e50914; color: white; border: none; padding: 8px 12px; border-radius: 4px; cursor: pointer;">Copy
+            Data for Publishing</button>
+    </div>
+
+    <script>
+        // --- CONFIGURATION ---
+        // Data Sources
+        const DATA_SOURCES = {
+            imdb: 'https://raw.githubusercontent.com/movie-monk-b0t/top250/master/top250_min.json', // External
+            personal: 'data/watchlist_2026.json', // Local
+            watched: 'data/watched.json' // Local
+        };
+
+        const STORAGE_KEY = 'watched_movies_v1';
+        const PERSONAL_KEY = 'personal_movies_v1';
+
+        // Check for ?edit=true in URL
+        const IS_ADMIN = new URLSearchParams(window.location.search).has('edit');
+
+        // State
+        let allMovies = [];
+        let personalMovies = [];
+        let watchedSet = new Set();
+
+        // Admin Panel Logic
+        if (IS_ADMIN) {
+            document.getElementById('admin-panel').style.display = 'block';
+            document.body.style.borderTop = "5px solid #e50914";
+        } else {
+            document.body.classList.add('read-only');
+        }
+
+        // --- CORE FUNCTIONS ---
+
+        async function init() {
+            try {
+                // Add timestamp to prevent caching
+                const cacheBuster = `?t=${Date.now()}`;
+
+                // Fetch all data in parallel
+                const [imdbData, personalData, watchedData] = await Promise.all([
+                    fetch(DATA_SOURCES.imdb).then(r => r.json()).catch(err => { console.error("IMDb load failed", err); return []; }),
+                    fetch(DATA_SOURCES.personal + cacheBuster).then(r => r.json()).catch(err => { console.error("Personal load failed", err); return []; }),
+                    fetch(DATA_SOURCES.watched + cacheBuster).then(r => r.json()).catch(err => { console.error("Watched load failed", err); return []; })
+                ]);
+
+                // 1. Process Watched Status FIRST (needed for rendering)
+                if (IS_ADMIN) {
+                    const localWatched = JSON.parse(localStorage.getItem(STORAGE_KEY) || 'null');
+                    watchedSet = new Set(localWatched || watchedData);
+                } else {
+                    watchedSet = new Set(watchedData);
+                }
+
+                // 2. Process Personal List
+                if (IS_ADMIN) {
+                    const localPersonal = JSON.parse(localStorage.getItem(PERSONAL_KEY) || 'null');
+                    personalMovies = localPersonal || personalData;
+                } else {
+                    personalMovies = personalData;
+                }
+                renderPersonalList();
+
+                // 3. Process IMDb List (now watchedSet is ready)
+                allMovies = imdbData;
+                allMovies.sort((a, b) => b.rating - a.rating);
+                renderMovies(allMovies);
+
+                updateStats();
+
+                // Admin Controls
+                if (IS_ADMIN) {
+                    const btn = document.createElement('button');
+                    btn.innerText = "+ Add New Movie";
+                    btn.className = "tab-btn active";
+                    btn.style.cssText = "font-size: 0.9rem; border: 1px dashed #444; padding: 5px 15px; border-radius: 20px;";
+                    btn.onclick = addPersonalMovie;
+                    const pControls = document.getElementById('personal-controls');
+                    if (pControls) pControls.appendChild(btn);
+
+                    // Helper: Reset Local to File Data
+                    const resetBtn = document.createElement('button');
+                    resetBtn.innerText = "Reset from File";
+                    resetBtn.style.cssText = "background: #333; color: #aaa; border: none; padding: 4px 8px; border-radius: 4px; cursor: pointer; display: block; margin-top: 10px; font-size: 0.8rem;";
+                    resetBtn.onclick = () => {
+                        if (confirm("Discard local changes and reload from JSON files?")) {
+                            localStorage.removeItem(STORAGE_KEY);
+                            localStorage.removeItem(PERSONAL_KEY);
+                            location.reload();
+                        }
+                    };
+                    document.getElementById('admin-panel').appendChild(resetBtn);
+                }
+
+            } catch (e) {
+                console.error("Critical Error", e);
+                document.body.innerHTML += `<div style="color:red; padding:20px;">Error loading data: ${e.message}</div>`;
+            }
+        }
+
+        // --- RENDER FUNCTIONS ---
+
+        function renderMovies(list) {
+            const container = document.getElementById('imdb-list');
+            if (!container) return;
+            container.innerHTML = '';
+
+            if (list.length === 0) {
+                container.innerHTML = '<div style="padding:20px; text-align:center; color:#666;">No movies found or failed to load.</div>';
+                return;
+            }
+
+            list.forEach((movie, index) => {
+                const title = movie.name || movie.title;
+                const id = title + '_' + (movie.year || 0);
+                const isWatched = watchedSet.has(id);
+
+                const div = document.createElement('div');
+                div.className = `movie-item ${isWatched ? 'watched' : ''}`;
+
+                if (IS_ADMIN) {
+                    div.onclick = (e) => toggleMovie(id, div);
+                    div.style.cursor = 'pointer';
+                }
+
+                const imgUrl = movie.thumb_url || movie.image_url || '';
+                const initials = title.replace(/[^a-zA-Z0-9 ]/g, '').split(' ').map(w => w[0]).slice(0, 2).join('') || '??';
+                let posterHTML = '';
+
+                if (imgUrl) {
+                    const safeTitle = title.replace(/'/g, "");
+                    posterHTML = `<img src="${imgUrl}" class="poster" onerror="this.outerHTML='<div class=\\'poster-placeholder\\'>${initials}</div>'">`;
+                } else {
+                    posterHTML = `<div class="poster-placeholder" title="${title}">${initials}</div>`;
+                }
+
+                div.innerHTML = `
+                    ${posterHTML}
+                    <div class="info">
+                        <span class="title">${index + 1}. ${title}</span>
+                        <div class="meta">
+                            <span class="rating">★ ${movie.rating || '-'}</span>
+                            ${movie.year || ''} • ${(movie.genre || []).slice(0, 2).join(', ')}
+                        </div>
+                    </div>
+                    <div class="check-container">
+                         <div class="check-box" style="${isWatched ? 'background:#00ff88; border-color:#00ff88; color:black;' : ''}">
+                            <span class="check-icon" style="opacity: ${isWatched ? 1 : 0}">✓</span>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        function renderPersonalList() {
+            const container = document.getElementById('personal-list-container');
+            if (!container) return;
+            container.innerHTML = '';
+
+            personalMovies.forEach((movie, index) => {
+                const div = document.createElement('div');
+                div.className = 'movie-item';
+                div.style.cursor = 'default';
+
+                const initials = movie.title.replace(/[^a-zA-Z0-9 ]/g, '').split(' ').map(w => w[0]).slice(0, 2).join('') || '??';
+                let posterHTML = '';
+                if (movie.thumb_url) {
+                    posterHTML = `<img src="${movie.thumb_url}" class="poster" onerror="this.outerHTML='<div class=\\'poster-placeholder\\'>${initials}</div>'">`;
+                } else {
+                    posterHTML = `<div class="poster-placeholder" title="${movie.title}">${initials}</div>`;
+                }
+
+                div.innerHTML = `
+                    ${posterHTML}
+                    <div class="info">
+                        <span class="title">${index + 1}. ${movie.title}</span>
+                        <div class="meta">
+                            <span class="rating">★ ${movie.rating || '-'}</span>
+                            ${movie.year || ''} • ${(movie.genre || []).join(', ')}
+                        </div>
+                    </div>
+                    ${IS_ADMIN ? `<button onclick="deletePersonal(${index})" style="background:none; border:none; color:#555; cursor:pointer;">✕</button>` : ''}
+               `;
+                container.appendChild(div);
+            });
+        }
+
+        // --- INTERACTION LOGIC ---
+
+        function toggleMovie(id, element) {
+            if (!IS_ADMIN) return;
+            toggleSetId(id);
+            const isWatched = watchedSet.has(id);
+            if (isWatched) element.classList.add('watched');
+            else element.classList.remove('watched');
+            const box = element.querySelector('.check-box');
+            const icon = element.querySelector('.check-icon');
+            box.style.background = isWatched ? '#00ff88' : 'transparent';
+            box.style.borderColor = isWatched ? '#00ff88' : '#555';
+            box.style.color = isWatched ? 'black' : 'transparent';
+            icon.style.opacity = isWatched ? '1' : '0';
+            updateStats();
+        }
+
+        function toggleSetId(id) {
+            if (watchedSet.has(id)) watchedSet.delete(id);
+            else watchedSet.add(id);
+            localStorage.setItem(STORAGE_KEY, JSON.stringify([...watchedSet]));
+        }
+
+        function addPersonalMovie() {
+            if (!IS_ADMIN) return;
+            const title = prompt("Movie Title:");
+            if (!title) return;
+            const year = prompt("Year:", "2026");
+            const rating = prompt("Rating:", "8.0");
+            const genreStr = prompt("Genre:", "Drama");
+            const newMovie = { title, year, rating, genre: genreStr ? genreStr.split(',') : [], thumb_url: "" };
+            personalMovies.push(newMovie);
+            localStorage.setItem(PERSONAL_KEY, JSON.stringify(personalMovies));
+            renderPersonalList();
+        }
+
+        function deletePersonal(index) {
+            if (!confirm("Remove?")) return;
+            personalMovies.splice(index, 1);
+            localStorage.setItem(PERSONAL_KEY, JSON.stringify(personalMovies));
+            renderPersonalList();
+        }
+
+        function updateStats() {
+            document.getElementById('progress-stats').innerText = `${watchedSet.size} Watched`;
+        }
+
+        function exportData() {
+            // Updated Export: Dump JSON for files
+            const publicDataStr = JSON.stringify([...watchedSet], null, 2);
+            const personalDataStr = JSON.stringify(personalMovies, null, 2);
+
+            const msg = `
+DATA FOR 'data/watched.json':
+-----------------------------
+${publicDataStr}
+
+DATA FOR 'data/watchlist_2026.json':
+------------------------------------
+${personalDataStr}
+            `;
+
+            navigator.clipboard.writeText(msg).then(() => {
+                alert("Copied to clipboard!\n\nContains two blocks (Watched IDs and Personal List).\nPaste them into their respective JSON files in the 'data' folder.");
+            });
+        }
+
+        function switchTab(tabName) {
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            const activeBtn = Array.from(document.querySelectorAll('.tab-btn')).find(b => b.textContent.includes(tabName === 'imdb' ? 'Top 250' : '2026'));
+            if (activeBtn) activeBtn.classList.add('active'); // Soft match
+            // Simplest selector fallback if text varies
+            if (tabName === 'imdb') document.querySelector('.tab-btn:nth-child(1)').classList.add('active');
+            else document.querySelector('.tab-btn:nth-child(2)').classList.add('active');
+
+            document.querySelectorAll('.tab-content').forEach(div => div.classList.remove('active'));
+            document.getElementById(`tab-${tabName}`).classList.add('active');
+        }
+
+        function filterMovies(query) {
+            const q = query.toLowerCase();
+            const filtered = allMovies.filter(m => (m.name || m.title).toLowerCase().includes(q));
+            renderMovies(filtered);
+        }
+
+        // Start
+        init();
+
+    </script>
 </body>
+
 </html>
