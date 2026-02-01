@@ -10,5 +10,14 @@
         "year": 2022,
         "rating": 6.4,
         "genre": ["Sci-Fi", "Horror"]
-    }
+    },
+{
+    "title": "Marty Supreme ",
+    "year": "2026",
+    "rating": "8.0",
+    "genre": [
+      "Drama",
+      "Sports"
+    ]
+  }
 ]
